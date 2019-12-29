@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
 
 using namespace std;
 namespace ext {
@@ -19,7 +20,7 @@ namespace ext {
 		fout.close();
 	}
 	void BinInput(Book ToFile) {
-		ofstream fout("Books.bin", istream::out | istream::binary | iostream::ate);
+		ofstream fout("Books.bin", istream::out | istream::binary | iostream::app);
 		fout.write(reinterpret_cast<char*>(&ToFile), sizeof(Book));
 		fout.close();
 	}
@@ -60,10 +61,9 @@ namespace ext {
 	}
 
 	void saveBookDb(Book arr[], int size) {
-		clearBinary();
-		for (int i = 0; i < size; i++) {
-			BinInput(arr[i]);
-		}
+		ofstream fout("Books.bin", istream::out | istream::binary | iostream::app);
+		fout.write(reinterpret_cast<char*>(arr), sizeof(Book) * size);
+		fout.close();
 	}
 
 
@@ -110,7 +110,6 @@ namespace ext {
 		arr2[size] = AddBook;
 		delete[] arr;
 		arr = arr2;
-		delete[] arr2;
 	}
 
 	void copy(char* ptr, const string& temp)
@@ -121,29 +120,40 @@ namespace ext {
 	void IdSearchEdit(Book* arr, int size, int ID) {
 		Id_Correct(arr, size);
 		bool ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit;
+		Book* ptr = nullptr;
 		for (int i = 0; i < size; i++) {
 			if (arr[i].Id == ID) {
-				cout << "Сменить колличество? 1/0" << endl;
-				cin >> ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit;
-				if (ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit) {
-					cin >> arr[i].Quantity;
-				}
-				cout << "Сменить Цену? 1/0" << endl;
-				cin >> ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit;
-				if (ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit) {
-					cin >> arr[i].Price;
-				}
-				cout << "Сменить Название? 1/0" << endl;
-				cin >> ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit;
-				if (ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit) {
-					cin >> arr[i].Title;
-				}
-				cout << "Сменить Автора? 1/0" << endl;
-				cin >> ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit;
-				if (ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit) {
-					cin >> arr[i].Author;
-				}
+				ptr = &arr[i];
 				break;
+			}
+		}
+
+		if (ptr == nullptr)
+		{
+
+		}
+		else
+		{
+
+			cout << "Сменить колличество? 1/0" << endl;
+			cin >> ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit;
+			if (ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit) {
+				cin >> ptr->Quantity;
+			}
+			cout << "Сменить Цену? 1/0" << endl;
+			cin >> ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit;
+			if (ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit) {
+				cin >> ptr->Price;
+			}
+			cout << "Сменить Название? 1/0" << endl;
+			cin >> ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit;
+			if (ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit) {
+				cin >> ptr->Title;
+			}
+			cout << "Сменить Автора? 1/0" << endl;
+			cin >> ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit;
+			if (ostalos_6_chasov_do_deadlineA_a_ya_tolko_2_funciyu_pilu_mne_tochno_ne_zhit) {
+				cin >> ptr->Author;
 			}
 		}
 	}
@@ -153,10 +163,10 @@ namespace ext {
 	void sortAuthor(Book* arr, int size) {
 		Book swap;
 		for (int i = 0; i < size - 1; ++i) {
-			if (arr[0].Author > arr[1].Author) {
+			if (string(arr[0].Author) > string(arr[1].Author)) {
 				i = 0;
 			}
-			if (arr[i].Author > arr[i + 1].Author) {
+			if (string(arr[i].Author) > string(arr[i + 1].Author)) {
 				swap = arr[i];
 				arr[i] = arr[i + 1];
 				arr[i + 1] = swap;
@@ -167,10 +177,10 @@ namespace ext {
 	void sortName(Book* arr, int size) {
 		Book swap;
 		for (int i = 0; i < size - 1; ++i) {
-			if (arr[0].Title > arr[1].Title) {
+			if (string(arr[0].Title) > string(arr[1].Title)) {
 				i = 0;
 			}
-			if (arr[i].Title > arr[i + 1].Title) {
+			if (string(arr[i].Title) > string(arr[i + 1].Title)) {
 				swap = arr[i];
 				arr[i] = arr[i + 1];
 				arr[i + 1] = swap;
@@ -245,36 +255,36 @@ namespace ext {
 	}
 	void searchB(Book* arr, int size, char name[]) {
 		int i = 0;
-		while (arr[i].Title != name) {
+		while (string(arr[i].Title) != string(name)) {
 			i++;
 		}
 		cout << "Название" << endl;
-		cout << arr[i].Title;
+		cout << arr[i].Title << endl;
 		cout << "Автор" << endl;
-		cout << arr[i].Author;
+		cout << arr[i].Author << endl;
 		cout << "Количество" << endl;
-		cout << arr[i].Quantity;
+		cout << arr[i].Quantity << endl;
 		cout << "Цена" << endl;
-		cout << arr[i].Price;
+		cout << arr[i].Price << endl;
 		cout << "Id" << endl;
-		cout << arr[i].Id;
+		cout << arr[i].Id << endl;
 		cin >> i;
 	}
 	void searchBa(Book* arr, int size, char autor[]) {
 		int i = 0;
-		while (arr[i].Author != autor) {
+		while (string(arr[i].Author) != string(autor)) {
 			i++;
 		}
 		cout << "Название" << endl;
-		cout << arr[i].Title;
+		cout << arr[i].Title << endl;
 		cout << "Автор" << endl;
-		cout << arr[i].Author;
+		cout << arr[i].Author << endl;
 		cout << "Количество" << endl;
-		cout << arr[i].Quantity;
+		cout << arr[i].Quantity << endl;
 		cout << "Цена" << endl;
-		cout << arr[i].Price;
+		cout << arr[i].Price << endl
 		cout << "Id" << endl;
-		cout << arr[i].Id;
+		cout << arr[i].Id << endl;
 		cin >> i;
 	}
 	///_______________________________________________________/
@@ -283,7 +293,7 @@ namespace ext {
 
 
 	Book InputBook() {
-		Book outt;
+		Book outt{};
 		string temp;
 		ifstream IdFile("id");
 

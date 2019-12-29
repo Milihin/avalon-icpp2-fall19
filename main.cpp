@@ -20,7 +20,7 @@ int main() {
 
 	setlocale(LC_ALL, "rus");
 
-	ifstream OutBooks("Books.bin", istream::out | istream::binary);
+	ifstream OutBooks("Books.bin", istream::in | istream::binary);
 
 	//это здесь потому что я люблю ASCII-арты
 	char str1[] = "__________               __     ________ __________ ";
@@ -71,6 +71,7 @@ int main() {
 		cout << "5 - показать все книги" << endl;
 		cout << "6 - у меня всё таки был бинарник, но я ответил 1 и теперь не знаю как вытащить данные из него(" << endl;
 		cout << "7 - сохранить" << endl;
+		cout << "8 - очистить бинарник" << endl;
 		cout << "0 - выход" << endl;
 		std::cin >> choise;
 		std::cin.ignore(100,'\n');
@@ -161,6 +162,9 @@ int main() {
 
 		case 7:
 			saveBookDb(books, size);
+			break;
+		case 8:
+			clearBinary();
 			break;
 		default:
 			cout << "fuck";
